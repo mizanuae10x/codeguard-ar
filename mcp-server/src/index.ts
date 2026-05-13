@@ -324,20 +324,9 @@ class CodeGuardARServer {
 
   private async handleCheckSecrets(args: { code: string }) {
     await this.ruleLoader.initialize();
-    const result = await this.analyzer.analyzeCode(
-      args.code,
-      "javascript",
-      "unknown"
-    );
+    const result = await this.analyzer.checkSecrets(args.code);
 
-    const secretChecks = result.checks.filter(
-      (c) =>
-        c.ruleId.includes("hardcoded") ||
-        c.ruleId.includes("credentials") ||
-        c.severity === "critical"
-    );
-
-    if (secretChecks.length === 0) {
+    if (result.checks.length === 0) {
       return {
         content: [
           {
@@ -348,10 +337,10 @@ class CodeGuardARServer {
       };
     }
 
-    const formatted = secretChecks
+    const formatted = result.checks
       .map(
         (c) =>
-          `⚠️ ${c.severity.toUpperCase()}: ${c.message}\n   Recommendation: ${c.recommendation}`
+          `${c.severity === 'critical' ? '🔴' : c.severity === 'high' ? '🟠' : '🟡'} [${c.severity.toUpperCase()}] ${c.message}\n   Line ${c.lineNumber}: ${c.codeExample}\n   Recommendation: ${c.recommendation}`
       )
       .join("\n\n");
 
@@ -359,7 +348,7 @@ class CodeGuardARServer {
       content: [
         {
           type: "text",
-          text: `Found ${secretChecks.length} potential secrets:\n\n${formatted}`,
+          text: `Found ${result.checks.length} potential secrets:\n\n${formatted}`,
         },
       ],
     };
