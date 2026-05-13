@@ -1,0 +1,38 @@
+{
+  "name": "codeguard-ar-mcp",
+  "version": "1.0.0",
+  "description": "MCP Server for CodeGuard Arabic - AI-powered secure coding assistant for UAE/GCC compliance",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "node dist/index.js",
+    "lint": "eslint src/**/*.ts",
+    "test": "vitest"
+  },
+  "keywords": [
+    "mcp",
+    "codeguard",
+    "security",
+    "arabic",
+    "uae",
+    "gcc",
+    "compliance",
+    "cbuae",
+    "desc",
+    "uae-ia"
+  ],
+  "author": "CISO Ready Team",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "glob": "^10.3.10",
+    "yaml": "^2.3.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "typescript": "^5.3.0",
+    "vitest": "^1.0.0"
+  }
+}
